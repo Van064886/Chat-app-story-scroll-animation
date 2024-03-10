@@ -1,9 +1,8 @@
 import 'dart:math';
 
-import 'package:faker/faker.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:faker/faker.dart'; 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/services.dart'; 
 import 'package:telegram_story_scroll_animation/models/user.dart';
 
 // List of profile picture urls
@@ -47,6 +46,10 @@ class _ChatsState extends State<Chats> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+        statusBarColor: Colors.white,
+        statusBarIconBrightness: Brightness.dark));
+
     // List of users
     List<User> users = List.generate(50, (index) {
       return User(
@@ -69,7 +72,7 @@ class _ChatsState extends State<Chats> {
                     color: const Color.fromARGB(255, 73, 72, 72),
                     padding: const EdgeInsets.all(2),
                     child: CircleAvatar(
-                      radius: 15,
+                      radius: 20,
                       backgroundImage: NetworkImage(user.picture!),
                     ),
                   ),
@@ -124,9 +127,9 @@ class _ChatsState extends State<Chats> {
         child: Row(
           children: [
             SizedBox(
-               width: MediaQuery.of(context).size.width * .2,
+              width: MediaQuery.of(context).size.width * .2,
               child: CircleAvatar(
-                radius: 28,
+                radius: 30,
                 backgroundImage:
                     NetworkImage(images[Random().nextInt(images.length)]),
               ),
@@ -155,8 +158,12 @@ class _ChatsState extends State<Chats> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * .3,
                         child: Text(
-                          ['Sat Jun 24 2023', 'Tue Dec 12 2023'][Random().nextInt(1)],
-                          style: const TextStyle(fontSize: 13, color: Colors.black54),
+                          [
+                            'Sat Jun 24 2023',
+                            'Tue Dec 12 2023'
+                          ][Random().nextInt(1)],
+                          style: const TextStyle(
+                              fontSize: 13, color: Colors.black54),
                           overflow: TextOverflow.ellipsis,
                         ),
                       )
@@ -167,9 +174,7 @@ class _ChatsState extends State<Chats> {
                   ),
                   Text(
                     Faker().lorem.sentence(),
-                    style: const TextStyle(
-                        fontSize: 13,
-                        color: Colors.black54),
+                    style: const TextStyle(fontSize: 13, color: Colors.black54),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   )
@@ -182,6 +187,7 @@ class _ChatsState extends State<Chats> {
     });
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: NestedScrollView(
             controller: _scrollController,
@@ -197,7 +203,7 @@ class _ChatsState extends State<Chats> {
                               fontSize: 18, fontWeight: FontWeight.w900),
                         )
                       : null,
-                  expandedHeight: 150.0,
+                  expandedHeight: 170.0,
                   leading: IconButton(
                       onPressed: () {},
                       icon: const Icon(
@@ -221,7 +227,7 @@ class _ChatsState extends State<Chats> {
                     ),
                     centerTitle: _isAppBarCollapsed ? true : false,
                     title: SizedBox(
-                      height: _isAppBarCollapsed ? 44 : 48,
+                      height: _isAppBarCollapsed ? 44 : 65,
                       width: _isAppBarCollapsed
                           ? MediaQuery.of(context).size.width * .4
                           : MediaQuery.of(context).size.width,
@@ -265,11 +271,15 @@ class _ChatsState extends State<Chats> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Messages', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16),),
-                    const SizedBox(height: 8,),
-                    Column(
-                      children: messages
+                    const Text(
+                      'Messages',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
                     ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Column(children: messages),
                   ],
                 ),
               ),
