@@ -1,7 +1,9 @@
 import 'dart:math';
 
 import 'package:faker/faker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:telegram_story_scroll_animation/models/user.dart';
 
 // List of profile picture urls
@@ -114,46 +116,70 @@ class _ChatsState extends State<Chats> {
       ).toList()),
     );
 
-    // List<Widget> allStories = List.generate(50, (index) {
-    //   return Row(
-    //     children: [
-    //       SizedBox(
-    //         width: _isAppBarCollapsed == true
-    //             ? 30
-    //             : MediaQuery.of(context).size.width * .15,
-    //         child: Column(
-    //           children: [
-    //             ClipRRect(
-    //               borderRadius: BorderRadius.circular(50),
-    //               child: Container(
-    //                 color: const Color.fromARGB(255, 73, 72, 72),
-    //                 padding: const EdgeInsets.all(2),
-    //                 child: CircleAvatar(
-    //                   radius: _isAppBarCollapsed == true ? 10 : 15,
-    //                   backgroundImage:
-    //                       NetworkImage(images[Random().nextInt(images.length)]),
-    //                 ),
-    //               ),
-    //             ),
-    //             SizedBox(
-    //               height: _isAppBarCollapsed == true ? 0 : 4,
-    //             ),
-    //             _isAppBarCollapsed == true
-    //                 ? const SizedBox.shrink()
-    //                 : Text(
-    //                     Faker().person.name(),
-    //                     style: const TextStyle(fontSize: 8),
-    //                     overflow: TextOverflow.ellipsis,
-    //                   ),
-    //           ],
-    //         ),
-    //       ),
-    //       const SizedBox(
-    //         width: 12,
-    //       ),
-    //     ],
-    //   );
-    // });
+    // List of all messages
+    List<Widget> messages = List.generate(100, (index) {
+      return Container(
+        width: MediaQuery.of(context).size.width,
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        child: Row(
+          children: [
+            SizedBox(
+               width: MediaQuery.of(context).size.width * .2,
+              child: CircleAvatar(
+                radius: 28,
+                backgroundImage:
+                    NetworkImage(images[Random().nextInt(images.length)]),
+              ),
+            ),
+            const SizedBox(
+              width: 12,
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * .3,
+                        child: Text(
+                          Faker().person.name(),
+                          style: const TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * .3,
+                        child: Text(
+                          ['Sat Jun 24 2023', 'Tue Dec 12 2023'][Random().nextInt(1)],
+                          style: const TextStyle(fontSize: 13, color: Colors.black54),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 2,
+                  ),
+                  Text(
+                    Faker().lorem.sentence(),
+                    style: const TextStyle(
+                        fontSize: 13,
+                        color: Colors.black54),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      );
+    });
 
     return Scaffold(
       body: SafeArea(
@@ -201,7 +227,7 @@ class _ChatsState extends State<Chats> {
                           : MediaQuery.of(context).size.width,
                       child: _isAppBarCollapsed
                           ? Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 shortenedUserStories,
                                 const SizedBox(
@@ -210,7 +236,9 @@ class _ChatsState extends State<Chats> {
                                 const Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(height: 5,),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
                                     Text(
                                       'Chats',
                                       style: TextStyle(
@@ -231,20 +259,19 @@ class _ChatsState extends State<Chats> {
               ];
             },
             body: SingleChildScrollView(
-              child: Column(
-                children: [
-                  for (var e in [10, 20, 30, 40, 50, 60, 70, 140])
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.4,
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      decoration: BoxDecoration(
-                        color: Colors.red.withAlpha(e),
-                      ),
-                      child: Center(
-                        child: Text(e.toString()),
-                      ),
+              child: Container(
+                margin: const EdgeInsets.only(top: 30),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Messages', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16),),
+                    const SizedBox(height: 8,),
+                    Column(
+                      children: messages
                     ),
-                ],
+                  ],
+                ),
               ),
             )),
       ),
