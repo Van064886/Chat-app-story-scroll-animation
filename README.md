@@ -1,3 +1,1 @@
-# telegram_story_scroll_animation
-
-A new Flutter project.
+# Chat app stories scroll animation
