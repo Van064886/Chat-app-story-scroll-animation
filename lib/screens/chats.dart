@@ -60,132 +60,10 @@ class _ChatsState extends State<Chats> with WidgetsBindingObserver {
               username: Faker().person.name(),
               picture: images[Random().nextInt(images.length)]);
         });
-
-        _allStories = _users.map((user) {
-          return Row(
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width * .15,
-                child: Column(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: Container(
-                        color: const Color.fromARGB(255, 73, 72, 72),
-                        padding: const EdgeInsets.all(2),
-                        child: CircleAvatar(
-                          radius: 20,
-                          backgroundImage: NetworkImage(user.picture!),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    Text(
-                      user.username!,
-                      style: const TextStyle(fontSize: 8, color: Colors.black),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                width: 12,
-              ),
-            ],
-          );
-        }).toList();
-
-        _shortenedUserStories = SizedBox(
-          width: 23 * 4,
-          child: Stack(
-              children: _users.sublist(0, 3).map(
-            (user) {
-              return Positioned(
-                left: user.id! * 23,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(50),
-                  child: Container(
-                    color: const Color.fromARGB(255, 73, 72, 72),
-                    padding: const EdgeInsets.all(2),
-                    child: CircleAvatar(
-                      radius: 13,
-                      backgroundImage: NetworkImage(user.picture!),
-                    ),
-                  ),
-                ),
-              );
-            },
-          ).toList()),
-        );
-
-        _messages = List.generate(100, (index) {
-          return Container(
-            width: MediaQuery.of(context).size.width,
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            child: Row(
-              children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * .2,
-                  child: CircleAvatar(
-                    radius: 30,
-                    backgroundImage:
-                        NetworkImage(images[Random().nextInt(images.length)]),
-                  ),
-                ),
-                const SizedBox(
-                  width: 12,
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * .3,
-                            child: Text(
-                              Faker().person.name(),
-                              style: const TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * .3,
-                            child: Text(
-                              [
-                                'Sat Jun 24 2023',
-                                'Tue Dec 12 2023'
-                              ][Random().nextInt(1)],
-                              style: const TextStyle(
-                                  fontSize: 13, color: Colors.black54),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 2,
-                      ),
-                      Text(
-                        Faker().lorem.sentence(),
-                        style: const TextStyle(
-                            fontSize: 13, color: Colors.black54),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-          );
-        });
+        
+        _allStories = generateUsersStories();
+        _shortenedUserStories = generateShortenedUserStories();
+        _messages = generateMessages();
       });
     });
   }
@@ -307,5 +185,139 @@ class _ChatsState extends State<Chats> with WidgetsBindingObserver {
             )),
       ),
     );
+  }
+
+  // Generate users stories
+  List<Widget> generateUsersStories() {
+    return _users.map((user) {
+      return Row(
+        children: [
+          SizedBox(
+            width: MediaQuery.of(context).size.width * .15,
+            child: Column(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: Container(
+                    color: const Color.fromARGB(255, 73, 72, 72),
+                    padding: const EdgeInsets.all(2),
+                    child: CircleAvatar(
+                      radius: 20,
+                      backgroundImage: NetworkImage(user.picture!),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 4,
+                ),
+                Text(
+                  user.username!,
+                  style: const TextStyle(fontSize: 8, color: Colors.black),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(
+            width: 12,
+          ),
+        ],
+      );
+    }).toList();
+  }
+
+  // Generate shortened user stories
+  Widget generateShortenedUserStories() {
+    return SizedBox(
+      width: 23 * 4,
+      child: Stack(
+          children: _users.sublist(0, 3).map(
+        (user) {
+          return Positioned(
+            left: user.id! * 23,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(50),
+              child: Container(
+                color: const Color.fromARGB(255, 73, 72, 72),
+                padding: const EdgeInsets.all(2),
+                child: CircleAvatar(
+                  radius: 13,
+                  backgroundImage: NetworkImage(user.picture!),
+                ),
+              ),
+            ),
+          );
+        },
+      ).toList()),
+    );
+  }
+
+  // Generate a list of messages
+  List<Widget> generateMessages() {
+    return List.generate(100, (index) {
+      return Container(
+        width: MediaQuery.of(context).size.width,
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        child: Row(
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width * .2,
+              child: CircleAvatar(
+                radius: 30,
+                backgroundImage:
+                    NetworkImage(images[Random().nextInt(images.length)]),
+              ),
+            ),
+            const SizedBox(
+              width: 12,
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * .3,
+                        child: Text(
+                          Faker().person.name(),
+                          style: const TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * .3,
+                        child: Text(
+                          [
+                            'Sat Jun 24 2023',
+                            'Tue Dec 12 2023'
+                          ][Random().nextInt(1)],
+                          style: const TextStyle(
+                              fontSize: 13, color: Colors.black54),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 2,
+                  ),
+                  Text(
+                    Faker().lorem.sentence(),
+                    style: const TextStyle(fontSize: 13, color: Colors.black54),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      );
+    });
   }
 }
